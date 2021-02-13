@@ -1,6 +1,6 @@
 {
   "name": "@discord-rose/permissions-middleware",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Permissions middleware for discord-rose",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,5 @@
     "url": "https://github.com/discord-rose/permissions-middleware/issues"
   },
   "homepage": "https://github.com/discord-rose/permissions-middleware#readme",
-  "typings": "./index.d.ts"
+  "types": "./types.d.ts"
 }
