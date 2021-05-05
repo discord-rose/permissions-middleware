@@ -35,6 +35,17 @@ worker.commands
   })
 ```
 
+## Using discord-rose's error logging
+
+When using `permissionsMiddleware()` by default it will send the error as a plain text message to the user. If you want to have discord-rose send the error with its error handler you can add an option in the function:
+```js
+permissionsMiddleware({
+  sendAsRoseError: true
+})
+```
+
+This will work with any custom messages you set.
+
 ## Custom message
 
 When using `permissionsMiddleware()` you can pass a custom message object with a function, that takes a function which takes the command context:

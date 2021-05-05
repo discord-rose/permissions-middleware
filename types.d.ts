@@ -17,8 +17,10 @@ declare module 'discord-rose/dist/typings/lib' {
 type msgFunction = (ctx: CommandContext) => string
 
 declare const _default: (msgs?: {
+  humanReadable: object,
   my: msgFunction,
   user: msgFunction
+  sendAsRoseError: boolean
 }) => (ctx: CommandContext) => boolean
 
 export default _default
