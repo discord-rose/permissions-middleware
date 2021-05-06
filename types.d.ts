@@ -50,7 +50,4 @@ export default _default
 /**
  * A JSON of the default provided bits
  */
-export const humanReadable: {
-  key: (keyof typeof bits)[],
-  value: string
-}
+export const humanReadable: humanReadableBits
