@@ -20,7 +20,7 @@ type humanReadableBits = {
   [key in bitKey[number]]?: string
 }
 
-type msgFunction = (ctx: CommandContext) => string
+type msgFunction = (perms: (keyof typeof bits)[], ctx: CommandContext) => string
 
 declare const _default: (opts?: {
   /**

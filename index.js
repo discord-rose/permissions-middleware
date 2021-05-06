@@ -34,23 +34,25 @@ const humanReadableStrings = {
 
 const exportFunc = module.exports = ({
   humanReadable = humanReadableStrings,
-  my = (ctx) => `I am missing the following permissions: ${ctx.command.myPerms.filter(p => !ctx.myPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
-  user = (ctx) => `You are missing the following permissions: ${ctx.command.userPerms.filter(p => !ctx.userPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
+  my = (perms, ctx) => `I am missing the following permissions: ${perms.map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
+  user = (perms, ctx) => `You are missing the following permissions: ${perms.map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
   sendAsRoseError = true,
   makeResponseAReply = false
 } = {}) => {
   return (ctx) => {
-      if (ctx.command.hasOwnProperty('myPerms') && !ctx.command.myPerms.every(x => ctx.myPerms(x))) {
-          if (sendAsRoseError) throw new Error(my(ctx))
-          makeResponseAReply ? ctx.reply(my(ctx)) : ctx.send(my(ctx))
-          return false
-      }
-      if (ctx.command.hasOwnProperty('userPerms') && !ctx.command.userPerms.every(x => ctx.hasPerms(x))) {
-          if (sendAsRoseError) throw new Error(user(ctx))
-          makeResponseAReply ? ctx.reply(user(ctx)) : ctx.send(user(ctx))
-          return false
-      }
-      return true
+    if (ctx.command.hasOwnProperty('myPerms') && !ctx.command.myPerms.every(x => ctx.myPerms(x))) {
+      const perms = ctx.command.myPerms.filter(p => !ctx.myPerms(p))
+      if (sendAsRoseError) throw new Error(my(perms, ctx))
+      makeResponseAReply ? ctx.reply(my(perms, ctx)) : ctx.send(my(perms, ctx))
+      return false
+    }
+    if (ctx.command.hasOwnProperty('userPerms') && !ctx.command.userPerms.every(x => ctx.hasPerms(x))) {
+      const perms = ctx.command.userPerms.filter(p => !ctx.userPerms(p))
+      if (sendAsRoseError) throw new Error(user(perms, ctx))
+      makeResponseAReply ? ctx.reply(user(perms, ctx)) : ctx.send(user(perms, ctx))
+      return false
+    }
+    return true
   }
 }
 

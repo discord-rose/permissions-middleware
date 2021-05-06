@@ -35,7 +35,7 @@ worker.commands
   })
 ```
 
-## Using discord-rose's error logging
+#### Using discord-rose's error logging
 
 When using `permissionsMiddleware()` by default it will send the error as a  rose error message to the user. If you want to have the handler send the message in plain text you and add the following:
 ```js
@@ -43,56 +43,72 @@ permissionsMiddleware({
   sendAsRoseError: false
 })
 ```
-- **Note:** If the permission "embed" is required and fails it will send as plain text. (this is a limitation of how rose sends errors)
-
 This will work with any custom messages you set.
 
-## Replying to the original message
+#### Replying to the original message
 
-If you are using the the plain text response ([sendAsRoseError: false](#using-discord-roses-error-logging "sendAsRoseError = false")) you can have the reponse reply to the executors message:
+If you are using the the plain text response ([sendAsRoseError: false](#using-discord-roses-error-logging "sendAsRoseError = false")) you can have the response reply to the executors message:
 ```js
 permsissionsMiddleare({
   makeResponseAReply: true
 })
 ```
+
+
 ## Custom message
 
 When using `permissionsMiddleware()` you can pass a custom message object with a function, that takes a function which takes the command context:
 ```js
 {
-  user: (ctx) => ...,//
-  my: (ctx) => ... //
+  user: (perms, ctx) => ...,//
+  my: (perms, ctx) => ... //
 }
 ```
 
 By default it is 
 ```js
 {
-  my = (ctx) => `I am missing the following permissions: ${ctx.command.myPerms.filter(p => !ctx.myPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join(', ')}`,
-  user = (ctx) => `You are missing the following permissions: ${ctx.command.userPerms.filter(p => !ctx.userPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join(', ')}\`
+  my = (perms, ctx) => `I am missing the following permissions: ${perms.map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
+  user = (perms, ctx) => `You are missing the following permissions: ${perms.map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
 }
 ```
 This will result in a message like: "I am missing the following permissions: Embed Links, Add Reactions" or "You are missing the following permissions: Manage Messages"
 This will only show the permissions that are missing and not all the required permissions for the command. To show all the permissions the command uses [this](#using-the-default-readable-permissions) setup would show all the perms.
 
-
-Example for creating a custom message:
+#### Example for creating a custom message:
 
 ```js
 worker.commands
   .middleware(permissionsMiddleware({
-    user: (ctx) => "You don't have permissions"
+    user: (perms, ctx) => "You don't have permissions"
   }))
 ```
+
+
 ## Using the default readable permissions
+
 Creating custom messages but using the provided readable permissions:
 ```js
 permissionsMiddleware({
-  user: (ctx) => `You don't have the required permissions you need: ${ctx.command.userPerms.map(p => permissionsMiddleware.humanReadable[p])}`
+  user: (perms, ctx) => `You don't have the required permissions you need: ${ctx.command.userPerms.map(p => permissionsMiddleware.humanReadable[p])}`,
+  my: (perms, ctx) => `You don't have the required permissions you need: ${ctx.command.myPerms.map(p => permissionsMiddleware.humanReadable[p])}`
 })
 ```
 
-## Default readable permisisons
+#### Using Typescript
+
+To import humanReadable in Typescript you need to import permissionsMiddleware as follows:
+
+```typescript
+import permissionsMiddleware, { humanReadable } from '@discord-rose/permissions-middleware'
+```
+
+
+
+
+
+## Default readable permissions
+
 ```json
 {
   createInvites: 'Create Invites',
@@ -128,4 +144,3 @@ permissionsMiddleware({
   emojis: 'Manage Emojis'
 }
 ```
-[1]: #custom
