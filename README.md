@@ -68,8 +68,8 @@ When using `permissionsMiddleware()` you can pass a custom message object with a
 By default it is 
 ```js
 {
-  user = (ctx) => `You're the following permissions: ${ctx.command.userPerms.join(', ')}`,
-  my = (ctx) => `I'm missing the following permissions: ${ctx.command.myPerms.join(', ')}`
+  my = (ctx) => `I am missing the following permissions: \`${ctx.command.myPerms.filter(p => !ctx.myPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join('`, `')}\``,
+  user = (ctx) => `You are missing the following permissions: \`${ctx.command.userPerms.filter(p => !ctx.userPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join('`, `')}\``
 }
 ```
 
