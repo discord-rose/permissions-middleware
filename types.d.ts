@@ -16,8 +16,8 @@ declare module 'discord-rose/dist/typings/lib' {
   }
 }
 
-type humanReadable = {
-  [key in bitKey[number]]: string
+type humanReadableBits = {
+  [key in bitKey[number]]?: string
 }
 
 type msgFunction = (ctx: CommandContext) => string
