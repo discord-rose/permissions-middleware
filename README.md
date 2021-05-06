@@ -37,15 +37,24 @@ worker.commands
 
 ## Using discord-rose's error logging
 
-When using `permissionsMiddleware()` by default it will send the error as a plain text message to the user. If you want to have discord-rose send the error with its error handler you can add an option in the function:
+When using `permissionsMiddleware()` by default it will send the error as a  rose error message to the user. If you want to have the handler send the message in plain text you and add the following:
 ```js
 permissionsMiddleware({
-  sendAsRoseError: true
+  sendAsRoseError: false
 })
 ```
+- **Note:** If the permission "embed" is required and fails it will send as plain text. (this is a limitation of how rose sends errors)
 
 This will work with any custom messages you set.
 
+## Replying to the original message
+
+If you are using the the plain text response ([sendAsRoseError: false](#using-discord-roses-error-logging "sendAsRoseError = false")) you can have the reponse reply to the executors message:
+```js
+permsissionsMiddleare({
+  makeResponseAReply: true
+})
+```
 ## Custom message
 
 When using `permissionsMiddleware()` you can pass a custom message object with a function, that takes a function which takes the command context:
@@ -71,4 +80,48 @@ worker.commands
   .middleware(permissionsMiddleware({
     user: (ctx) => "You don't have permissions"
   }))
+```
+
+Creating custom messages but using the provided readable permissions:
+```js
+permissionsMiddleware({
+  user: (ctx) => `You don't have the required permissions you need: ${ctx.command.userPerms.map(p => permissionsMiddleware.humanReadable[p])}`
+})
+```
+
+## Default readable permisisons
+```json
+{
+  createInvites: 'Create Invites',
+  kick: 'Kick Members',
+  ban: 'Ban Members',
+  administrator: 'Administrator',
+  manageChannels: 'Manage Channels',
+  manageGuild: 'Manage Server',
+  addReactions: 'Add Reactions',
+  auditLog: 'View Audit Log',
+  prioritySpeaker: 'Priority Speaker',
+  stream: 'Stream',
+  viewChannel: 'View Channel(s)',
+  sendMessages: 'Send Messages',
+  tts: 'Send Text-to-Speech Messages',
+  manageMessages: 'Manage Messages',
+  embed: 'Embed Links',
+  files: 'Attach Files',
+  readHistory: 'Read Message History',
+  mentionEveryone: 'Mention \@everyone, \@here, and All Roles',
+  externalEmojis: 'Use External Emoji',
+  viewInsights: 'View Server Invites',
+  connect: 'Connect (Voice)',
+  speak: 'Speak (Voice)',
+  mute: 'Mute (Voice)',
+  deafen: 'Deafen (Voice)',
+  move: 'Move (Voice)',
+  useVoiceActivity: 'Use Voice Activity',
+  nickname: 'Change Nickname',
+  manageNicknames: 'Manage Nicknames',
+  manageRoles: 'Manage Roles',
+  webhooks: 'Manage Webhooks',
+  emojis: 'Manage Emojis'
+}
 ```
