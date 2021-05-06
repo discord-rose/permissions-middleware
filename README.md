@@ -68,11 +68,11 @@ When using `permissionsMiddleware()` you can pass a custom message object with a
 By default it is 
 ```js
 {
-  my = (ctx) => `I am missing the following permissions: \`${ctx.command.myPerms.filter(p => !ctx.myPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join('`, `')}\``,
-  user = (ctx) => `You are missing the following permissions: \`${ctx.command.userPerms.filter(p => !ctx.userPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join('`, `')}\``
+  my = (ctx) => `I am missing the following permissions: ${ctx.command.myPerms.filter(p => !ctx.myPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join(', ')}`,
+  user = (ctx) => `You are missing the following permissions: ${ctx.command.userPerms.filter(p => !ctx.userPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join(', ')}\`
 }
 ```
-This will result in a message like: "I am missing the following permissions: `Embed Links`" or "You are missing the following permissions: `Manage Messages`"
+This will result in a message like: "I am missing the following permissions: Embed Links, Add Reactions" or "You are missing the following permissions: Manage Messages"
 This will only show the permissions that are missing and not all the required permissions for the command. To show all the permissions the command uses [this](#using-the-default-readable-permissions) setup would show all the perms.
 
 

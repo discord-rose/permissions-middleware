@@ -16,38 +16,8 @@ declare module 'discord-rose/dist/typings/lib' {
   }
 }
 
-type humanReadableBits = {
-  createInvites?: string;
-  kick?: string;
-  ban?: string;
-  administrator?: string;
-  manageChannels?: string;
-  manageGuild?: string;
-  addReactions?: string;
-  auditLog?: string;
-  prioritySpeaker?: string;
-  stream?: string;
-  viewChannel?: string;
-  sendMessages?: string;
-  tts?: string;
-  manageMessages?: string;
-  embed?: string;
-  files?: string;
-  readHistory?: string;
-  mentionEveryone?: string;
-  externalEmojis?: string;
-  viewInsights?: string;
-  connect?: string;
-  speak?: string;
-  mute?: string;
-  deafen?: string;
-  move?: string;
-  useVoiceActivity?: string;
-  nickname?: string;
-  manageNicknames?: string;
-  manageRoles?: string;
-  webhooks?: string;
-  emojis?: string;
+type humanReadable = {
+  [key in bitKey[number]]: string
 }
 
 type msgFunction = (ctx: CommandContext) => string
