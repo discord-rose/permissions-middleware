@@ -72,6 +72,9 @@ By default it is
   user = (ctx) => `You are missing the following permissions: \`${ctx.command.userPerms.filter(p => !ctx.userPerms(p)).map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) || p).join('`, `')}\``
 }
 ```
+This will result in a message like: "I am missing the following permissions: `Embed Links`" or "You are missing the following permissions: `Manage Messages`"
+This will only show the permissions that are missing and not all the required permissions for the command. To show all the permissions the command uses [this](#using-the-default-readable-permissions) setup would show all the perms.
+
 
 Example for creating a custom message:
 
@@ -81,7 +84,7 @@ worker.commands
     user: (ctx) => "You don't have permissions"
   }))
 ```
-
+## Using the default readable permissions
 Creating custom messages but using the provided readable permissions:
 ```js
 permissionsMiddleware({
@@ -125,3 +128,4 @@ permissionsMiddleware({
   emojis: 'Manage Emojis'
 }
 ```
+[1]: #custom
