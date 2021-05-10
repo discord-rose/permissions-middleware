@@ -95,5 +95,5 @@ import permissionsMiddleware, { humanReadable } from '@discord-rose/permissions-
 
 ## Default readable permissions
 
-[Can be viewed here.](./permissions-middleware/blob/master/index.js#L1)
+[Can be viewed here.](./index.js#L1)
 
