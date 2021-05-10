@@ -1,5 +1,5 @@
 import { bits } from 'discord-rose/dist/utils/Permissions'
-import { CommandContext } from "discord-rose/dist/structures/CommandContext";
+import { CommandContext } from "discord-rose/dist/typings/lib";
 
 type bitKey = (keyof typeof bits)[]
 
@@ -20,7 +20,7 @@ type humanReadableBits = {
   [key in bitKey[number]]?: string
 }
 
-type msgFunction = (ctx: CommandContext, perms: (keyof typeof bits)[]) => string
+type msgFunction = (ctx: CommandContext, perms: (keyof typeof bits)[]) => Promise<string> | string
 
 declare const _default: (opts?: {
   /**
