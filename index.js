@@ -38,10 +38,16 @@ const exportFunc = module.exports = ({
 } = {}) => {
   return async (ctx) => {
     if (ctx.command.hasOwnProperty('myPerms') && !ctx.command.myPerms.every(x => ctx.myPerms(x))) {
-      return ctx.error(await my(ctx, ctx.command.myPerms.filter(p => !ctx.myPerms(p))))
+      const missingPerms = ctx.command.myPerms.filter(x => !ctx.myPerms(x))
+      if (missingPerms.length > 0) {
+        return ctx.error(await my(ctx, missingPerms))
+      }
     }
-    if (ctx.command.hasOwnProperty('userPerms') && !ctx.command.userPerms.every(x => ctx.hasPerms(x))) {
-      return ctx.error(await user(ctx, ctx.command.hasPerms.filter(p => !ctx.userPerms(p))))
+    if (ctx.command.hasOwnProperty('userPerms')) {
+      const missingPerms = ctx.command.userPerms.filter(x => !ctx.hasPerms(x))
+      if (missingPerms.length > 0) {
+        return ctx.error(await user(ctx, missingPerms))
+      }
     }
     return true
   }
