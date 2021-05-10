@@ -36,12 +36,12 @@ const exportFunc = module.exports = ({
   my = (perms, _ctx) => `I am missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
   user = (perms, _ctx) => `You are missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
 } = {}) => {
-  return (ctx) => {
+  return async (ctx) => {
     if (ctx.command.hasOwnProperty('myPerms') && !ctx.command.myPerms.every(x => ctx.myPerms(x))) {
-      return ctx.error(my(ctx.command.myPerms.filter(p => !ctx.myPerms(p)), ctx))
+      return ctx.error(await my(ctx.command.myPerms.filter(p => !ctx.myPerms(p)), ctx))
     }
     if (ctx.command.hasOwnProperty('userPerms') && !ctx.command.userPerms.every(x => ctx.hasPerms(x))) {
-      return ctx.error(user(ctx.command.hasPerms.filter(p => !ctx.userPerms(p)), ctx))
+      return ctx.error(await user(ctx.command.hasPerms.filter(p => !ctx.userPerms(p)), ctx))
     }
     return true
   }
