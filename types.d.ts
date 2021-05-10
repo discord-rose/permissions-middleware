@@ -1,7 +1,7 @@
-import { bits } from 'discord-rose/dist/utils/Permissions'
-import { CommandContext } from "discord-rose/dist/typings/lib";
+import { PermissionsUtils } from 'discord-rose'
+import { CommandContext } from "discord-rose/dist/typings/lib"
 
-type bitKey = (keyof typeof bits)[]
+type bitKey = (keyof typeof PermissionsUtils.bits)[]
 
 declare module 'discord-rose/dist/typings/lib' {
   interface CommandOptions {
@@ -20,7 +20,7 @@ type humanReadableBits = {
   [key in bitKey[number]]?: string
 }
 
-type msgFunction = (ctx: CommandContext, perms: (keyof typeof bits)[]) => Promise<string> | string
+type msgFunction = (ctx: CommandContext, perms: bitKey) => Promise<string> | string
 
 declare const _default: (opts?: {
   /**
