@@ -51,8 +51,8 @@ When using `permissionsMiddleware()` you can pass a custom message object with a
 By default it is 
 ```js
 {
-  my = (_ctx, perms) => `I am missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
-  user = (_ctx, perms) => `You are missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
+  my = (ctx, perms) => `I am missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
+  user = (ctx, perms) => `You are missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
 }
 ```
 This will result in a message like: "I am missing the following permissions: Embed Links, Add Reactions" or "You are missing the following permissions: Manage Messages"
