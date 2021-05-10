@@ -35,27 +35,10 @@ worker.commands
   })
 ```
 
-#### Using discord-rose's error logging
-
-When using `permissionsMiddleware()` by default it will send the error as a  rose error message to the user. If you want to have the handler send the message in plain text you and add the following:
-```js
-permissionsMiddleware({
-  sendAsRoseError: false
-})
-```
-This will work with any custom messages you set.
-
-#### Replying to the original message
-
-If you are using the the plain text response ([sendAsRoseError: false](#using-discord-roses-error-logging "sendAsRoseError = false")) you can have the response reply to the executors message:
-```js
-permsissionsMiddleare({
-  makeResponseAReply: true
-})
-```
 
 
-## Custom message
+
+## Creating a custom message
 
 When using `permissionsMiddleware()` you can pass a custom message object with a function, that takes a function which takes the command context:
 ```js
@@ -68,8 +51,8 @@ When using `permissionsMiddleware()` you can pass a custom message object with a
 By default it is 
 ```js
 {
-  my = (perms, ctx) => `I am missing the following permissions: ${perms.map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
-  user = (perms, ctx) => `You are missing the following permissions: ${perms.map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
+  my = (perms, _ctx) => `I am missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
+  user = (perms, _ctx) => `You are missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
 }
 ```
 This will result in a message like: "I am missing the following permissions: Embed Links, Add Reactions" or "You are missing the following permissions: Manage Messages"
@@ -85,6 +68,7 @@ worker.commands
 ```
 
 
+
 ## Using the default readable permissions
 
 Creating custom messages but using the provided readable permissions:
@@ -94,6 +78,8 @@ permissionsMiddleware({
   my: (perms, ctx) => `You don't have the required permissions you need: ${ctx.command.myPerms.map(p => permissionsMiddleware.humanReadable[p])}`
 })
 ```
+
+This will also list all of the permissions required by the command. The `perms` parameter only lists the permissions that are missing.
 
 #### Using Typescript
 

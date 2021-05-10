@@ -1,4 +1,4 @@
-const humanReadableStrings = {
+const humanReadable = {
   createInvites: 'Create Invites',
   kick: 'Kick Members',
   ban: 'Ban Members',
@@ -33,27 +33,18 @@ const humanReadableStrings = {
 }
 
 const exportFunc = module.exports = ({
-  humanReadable = humanReadableStrings,
-  my = (perms, ctx) => `I am missing the following permissions: ${perms.map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
-  user = (perms, ctx) => `You are missing the following permissions: ${perms.map(p => (typeof humanReadable === 'function' ? humanReadable(ctx, p) : humanReadable[p]) ?? p).join(', ')}`,
-  sendAsRoseError = true,
-  makeResponseAReply = false
+  my = (perms, _ctx) => `I am missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
+  user = (perms, _ctx) => `You are missing the following permissions: ${perms.map(p => humanReadable[p] ?? p).join(', ')}`,
 } = {}) => {
   return (ctx) => {
     if (ctx.command.hasOwnProperty('myPerms') && !ctx.command.myPerms.every(x => ctx.myPerms(x))) {
-      const perms = ctx.command.myPerms.filter(p => !ctx.myPerms(p))
-      if (sendAsRoseError) throw new Error(my(perms, ctx))
-      makeResponseAReply ? ctx.reply(my(perms, ctx)) : ctx.send(my(perms, ctx))
-      return false
+      return ctx.error(my(ctx.command.myPerms.filter(p => !ctx.myPerms(p)), ctx))
     }
     if (ctx.command.hasOwnProperty('userPerms') && !ctx.command.userPerms.every(x => ctx.hasPerms(x))) {
-      const perms = ctx.command.userPerms.filter(p => !ctx.userPerms(p))
-      if (sendAsRoseError) throw new Error(user(perms, ctx))
-      makeResponseAReply ? ctx.reply(user(perms, ctx)) : ctx.send(user(perms, ctx))
-      return false
+      return ctx.error(user(ctx.command.hasPerms.filter(p => !ctx.userPerms(p)), ctx))
     }
     return true
   }
 }
 
-exportFunc.humanReadable = humanReadableStrings
+exportFunc.humanReadable = humanReadable

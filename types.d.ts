@@ -24,10 +24,6 @@ type msgFunction = (perms: (keyof typeof bits)[], ctx: CommandContext) => string
 
 declare const _default: (opts?: {
   /**
-   * Object of readable strings mapped to permissions bit strings or function for dynamic readable conversion
-   */
-  humanReadable?: humanReadableBits | ((ctx: CommandContext, p: (keyof typeof bits)[]) => string)
-  /**
    * Message that returns if bot requires permissions
    */
   my?: msgFunction,
@@ -35,14 +31,6 @@ declare const _default: (opts?: {
    * Message that returns if user requrires permissions
    */
   user?: msgFunction
-  /**
-   * Have the error return as a rose error or sent in plaintext
-   */
-  sendAsRoseError?: boolean
-  /**
-   * Have the error response be a reply if sendAsRoseError is false
-   */
-  makeResponseAReply?: boolean
 }) => (ctx: CommandContext) => boolean
 
 export default _default
